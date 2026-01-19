@@ -29,6 +29,7 @@ bd sync
 ### Working with Issues
 
 Issues in Beads are:
+
 - **Git-native**: Stored in `.beads/issues.jsonl` and synced like code
 - **AI-friendly**: CLI-first design works perfectly with AI coding agents
 - **Branch-aware**: Issues can follow your branch workflow
