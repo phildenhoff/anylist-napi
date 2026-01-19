@@ -1,34 +1,22 @@
+# anylist-ts
 
-Default to using Bun instead of Node.js.
+Bun/Node bindings for anylist_rs.
 
-- Use `bun <file>` instead of `node <file>` or `ts-node <file>`
-- Use `bun test` instead of `jest` or `vitest`
-- Use `bun build <file.html|file.ts|file.css>` instead of `webpack` or `esbuild`
-- Use `bun install` instead of `npm install` or `yarn install` or `pnpm install`
-- Use `bun run <script>` instead of `npm run <script>` or `yarn run <script>` or `pnpm run <script>`
-- Use `bunx <package> <command>` instead of `npx <package> <command>`
-- Bun automatically loads .env, so don't use dotenv.
+## Task-tracking workflow
 
-## APIs
+You must use `beads` (cli comman: `bd`) to track your work.
+Run `bd prime` to understand how to use it deeply.
 
-- `Bun.serve()` supports WebSockets, HTTPS, and routes. Don't use `express`.
-- `bun:sqlite` for SQLite. Don't use `better-sqlite3`.
-- `Bun.redis` for Redis. Don't use `ioredis`.
-- `Bun.sql` for Postgres. Don't use `pg` or `postgres.js`.
-- `WebSocket` is built-in. Don't use `ws`.
-- Prefer `Bun.file` over `node:fs`'s readFile/writeFile
-- Bun.$`ls` instead of execa.
+Short version:
 
-## Testing
+- find available work: `bd ready`
+- view issue details: `bd show <id>`
+- claim work: `bd update <id> --status in_progress`
+- complete work: `bd close <id>`
+- persist task updates to git: `bd sync`
 
-Use `bun test` to run tests.
+## Preferences
 
-```ts#index.test.ts
-import { test, expect } from "bun:test";
-
-test("hello world", () => {
-  expect(1).toBe(1);
-});
-```
+Prefer using Bun instead of node, ts-node, jest/vitest, webpack/esbuild, npm/yarn/pnpm, npx.
 
 For more information, read the Bun API docs in `node_modules/bun-types/docs/**.mdx`.
