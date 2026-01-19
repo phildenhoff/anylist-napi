@@ -20,8 +20,114 @@ This package targets multiple JavaScript runtimes:
 
 ## Usage
 
+### Authentication
+
 ```typescript
-<content to come>
+import { AnyListClient } from "anylist-napi";
+
+// Login with email and password
+const client = await AnyListClient.login(
+  "your-email@example.com",
+  "your-password",
+);
+
+// Save tokens for later use
+const tokens = client.getTokens();
+console.log("Logged in as:", tokens.userId);
+
+// Resume session from saved tokens
+const resumedClient = AnyListClient.fromTokens(tokens);
+```
+
+### Working with Lists
+
+```typescript
+// Get all lists
+const lists = await client.getLists();
+for (const list of lists) {
+  console.log(`${list.name}: ${list.items.length} items`);
+}
+
+// Create a new list
+const groceryList = await client.createList("Weekly Groceries");
+
+// Add items
+await client.addItem(groceryList.id, "Milk");
+await client.addItemWithDetails(
+  groceryList.id,
+  "Apples",
+  "2 lbs", // quantity
+  "Organic", // note
+  "Produce", // category
+);
+
+// Check off items
+const itemToCheck = groceryList.items[0];
+await client.crossOffItem(groceryList.id, itemToCheck.id);
+
+// Uncheck items
+await client.uncheckItem(groceryList.id, itemToCheck.id);
+
+// Delete items
+await client.deleteItem(groceryList.id, itemToCheck.id);
+```
+
+### Working with Recipes
+
+```typescript
+// Get all recipes
+const recipes = await client.getRecipes();
+console.log(`Found ${recipes.length} recipes`);
+
+// Get a specific recipe
+const recipe = await client.getRecipeById("recipe-id-here");
+console.log(`Recipe: ${recipe.name}`);
+console.log(`Ingredients: ${recipe.ingredients.length}`);
+
+// Add recipe ingredients to a list
+await client.addRecipeToList(
+  recipe.id,
+  groceryList.id,
+  1.5, // scale factor (optional)
+);
+```
+
+### Complete Example
+
+```typescript
+import { AnyListClient } from "anylist-napi";
+
+async function main() {
+  // Authenticate
+  const client = await AnyListClient.login(
+    process.env.ANYLIST_EMAIL!,
+    process.env.ANYLIST_PASSWORD!,
+  );
+
+  // Create a new grocery list
+  const list = await client.createList("Weekend Shopping");
+
+  // Add some items
+  await client.addItem(list.id, "Bread");
+  await client.addItem(list.id, "Eggs");
+  await client.addItemWithDetails(list.id, "Chicken", "2 lbs", null, "Meat");
+
+  // Get and display all lists
+  const allLists = await client.getLists();
+  for (const l of allLists) {
+    console.log(`\n${l.name}:`);
+    for (const item of l.items) {
+      const status = item.checked ? "✓" : " ";
+      console.log(`  [${status}] ${item.name} ${item.quantity || ""}`);
+    }
+  }
+
+  // Save tokens for next time
+  const tokens = client.getTokens();
+  // Store tokens securely...
+}
+
+main().catch(console.error);
 ```
 
 ## Development
