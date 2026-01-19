@@ -6,3 +6,6 @@ node_modules/
 
 # Build files end in .node
 **.node
+
+# Agents
+.claude/settings.local.json
