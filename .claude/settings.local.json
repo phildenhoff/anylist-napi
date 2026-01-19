@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.rs)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(cargo check:*)",
+      "Bash(bun install:*)",
+      "Bash(bun run build:*)",
+      "Bash(bunx tsc:*)",
+      "Bash(bun:*)",
+      "Bash(fd:*)",
+      "Skill(beads:list)",
+      "Skill(beads:init)",
+      "Bash(bd init:*)",
+      "Bash(bd create:*)",
+      "Bash(bd list:*)",
+      "Bash(bd show:*)",
+      "Bash(bd dep list:*)",
+      "Bash(bd dep tree:*)",
+      "Bash(bd dep add:*)",
+      "Bash(bd ready:*)",
+      "Bash(bd update:*)",
+      "Skill(beads:update)"
+    ]
+  }
+}
