@@ -1,4 +1,4 @@
-# anylist-ts
+# anylist-napi
 
 Bun/Node bindings for anylist_rs.
 

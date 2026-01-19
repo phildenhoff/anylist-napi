@@ -1,7 +1,7 @@
 {
-  "name": "anylist-ts",
+  "name": "anylist-napi",
   "version": "1.0.0",
-  "description": "Template project for writing node package with napi-rs",
+  "description": "Typescript bindings for anylist_rs",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
     "browser.js"
   ],
   "napi": {
-    "binaryName": "anylist-ts",
+    "binaryName": "anylist-napi",
     "targets": [
       "x86_64-pc-windows-msvc",
       "x86_64-apple-darwin",
