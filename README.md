@@ -1,6 +1,6 @@
 # anylist-napi
 
-TypeScript/JavaScript bindings for anylist_rs using NAPI.
+TypeScript/JavaScript bindings for [anylist_rs](https://github.com/phildenhoff/anylist_rs) using [NAPI](https://napi.rs).
 
 ## Installation
 
