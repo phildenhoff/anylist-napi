@@ -1,21 +1,25 @@
 import { AnyListClient } from "../index.js";
 
 async function main() {
-  // Authenticate
-  const client = await AnyListClient.login(
-    process.env.ANYLIST_EMAIL!,
-    process.env.ANYLIST_PASSWORD!,
-  );
+  const email = process.env.ANYLIST_EMAIL;
+  const password = process.env.ANYLIST_PASSWORD;
 
-  // Create a new grocery list
+  if (!email || !password) {
+    throw new Error("Email and password must be provided");
+  }
+
+  // Authenticate
+  const client = await AnyListClient.login(email, password);
+
+  console.log("Creating a new list...");
   const list = await client.createList("Weekend Shopping");
 
-  // Add some items
+  console.log("Adding some items...");
   await client.addItem(list.id, "Bread");
   await client.addItem(list.id, "Eggs");
   await client.addItemWithDetails(list.id, "Chicken", "2 lbs", null, "Meat");
 
-  // Get and display all lists
+  console.log("Listing all items from all lists...");
   const allLists = await client.getLists();
   for (const l of allLists) {
     console.log(`\n${l.name}:`);
