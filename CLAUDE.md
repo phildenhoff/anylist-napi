@@ -1,6 +1,6 @@
 # anylist-napi
 
-Bun/Node bindings for anylist_rs.
+Bun/Node/Deno bindings for anylist_rs.
 
 ## Task-tracking workflow
 
@@ -17,6 +17,4 @@ Short version:
 
 ## Preferences
 
-Prefer using Bun instead of node, ts-node, jest/vitest, webpack/esbuild, npm/yarn/pnpm, npx.
-
-For more information, read the Bun API docs in `node_modules/bun-types/docs/**.mdx`.
+Bun is the package manager of choice. Prefer typescript-first tooling.
