@@ -2,50 +2,38 @@
   "name": "anylist-napi",
   "version": "1.0.0",
   "description": "Typescript bindings for anylist_rs",
-  "main": "index.js",
+  "keywords": [
+    "N-API",
+    "NAPI",
+    "Rust",
+    "napi-rs",
+    "node-addon",
+    "node-addon-api"
+  ],
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/phildenhoff/anylist-napi.git"
   },
-  "license": "MIT",
-  "keywords": [
-    "napi-rs",
-    "NAPI",
-    "N-API",
-    "Rust",
-    "node-addon",
-    "node-addon-api"
-  ],
   "files": [
     "index.d.ts",
     "index.js"
   ],
-  "napi": {
-    "binaryName": "anylist-napi",
-    "targets": [
-      "x86_64-pc-windows-msvc",
-      "x86_64-apple-darwin",
-      "x86_64-unknown-linux-gnu",
-      "x86_64-unknown-linux-musl",
-      "aarch64-apple-darwin"
-    ]
-  },
-  "engines": {
-    "node": ">= 12.22.0 < 13 || >= 14.17.0 < 15 || >= 15.12.0 < 16 || >= 16.0.0"
-  },
+  "main": "index.js",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "artifacts": "napi artifacts",
     "bench": "node --import @oxc-node/core/register benchmark/bench.ts",
     "build": "napi build --platform --release --esm",
     "build:debug": "napi build --platform --esm",
+    "postbuild": "oxfmt",
     "format": "bun run format:ts & bun run format:rs & wait",
-    "format:ts": "prettier . -w",
+    "format:ts": "oxfmt",
     "format:rs": "cargo fmt",
-    "lint": "oxlint .",
+    "lint": "oxlint",
     "prepublishOnly": "napi prepublish -t npm",
     "test": "ava",
     "preversion": "napi build --platform --esm && git add .",
@@ -56,31 +44,37 @@
     "@oxc-node/core": "^0.0.35",
     "ava": "^6.4.1",
     "chalk": "^5.6.2",
+    "oxfmt": "^0.26.0",
     "oxlint": "^1.14.0",
-    "prettier": "^3.6.2",
     "tinybench": "^6.0.0",
     "typescript": "^5.9.2"
   },
+  "napi": {
+    "binaryName": "anylist-napi",
+    "targets": [
+      "x86_64-pc-windows-msvc",
+      "x86_64-apple-darwin",
+      "x86_64-unknown-linux-gnu",
+      "x86_64-unknown-linux-musl",
+      "aarch64-apple-darwin"
+    ]
+  },
   "ava": {
-    "extensions": {
-      "ts": "module"
-    },
-    "timeout": "2m",
-    "workerThreads": false,
     "environmentVariables": {
       "OXC_TSCONFIG_PATH": "./__test__/tsconfig.json"
+    },
+    "extensions": {
+      "ts": "module"
     },
     "nodeArguments": [
       "--import",
       "@oxc-node/core/register"
-    ]
+    ],
+    "timeout": "2m",
+    "workerThreads": false
   },
-  "prettier": {
-    "printWidth": 120,
-    "semi": false,
-    "trailingComma": "all",
-    "singleQuote": true,
-    "arrowParens": "always"
+  "engines": {
+    "node": ">= 12.22.0 < 13 || >= 14.17.0 < 15 || >= 15.12.0 < 16 || >= 16.0.0"
   },
   "packageManager": "bun@1.3.6"
 }
