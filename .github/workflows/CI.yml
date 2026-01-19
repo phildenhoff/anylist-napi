@@ -17,6 +17,7 @@ env:
       - .editorconfig
       - docs/**
   pull_request: null
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -157,6 +158,9 @@ jobs:
         shell: bash
       - name: Test bindings
         run: yarn test
+        env:
+          ANYLIST_EMAIL: ${{ secrets.ANYLIST_EMAIL }}
+          ANYLIST_PASSWORD: ${{ secrets.ANYLIST_PASSWORD }}
   test-linux-binding:
     name: Test ${{ matrix.target }} - node@${{ matrix.node }}
     needs:
@@ -221,8 +225,11 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: ${{ steps.docker.outputs.IMAGE }}
-          options: "-v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }} --platform ${{ steps.docker.outputs.PLATFORM }}"
+          options: "-v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }} --platform ${{ steps.docker.outputs.PLATFORM }} -e ANYLIST_EMAIL -e ANYLIST_PASSWORD"
           run: yarn test
+        env:
+          ANYLIST_EMAIL: ${{ secrets.ANYLIST_EMAIL }}
+          ANYLIST_PASSWORD: ${{ secrets.ANYLIST_PASSWORD }}
   test-deno:
     name: Test Deno - ${{ matrix.deno }} - ${{ matrix.settings.target }}
     needs:
@@ -262,7 +269,10 @@ jobs:
         run: ls -R .
         shell: bash
       - name: Test bindings (Deno)
-        run: deno run --allow-ffi --allow-read npm:vitest run
+        run: deno run --allow-ffi --allow-read --allow-env --allow-net npm:vitest run
+        env:
+          ANYLIST_EMAIL: ${{ secrets.ANYLIST_EMAIL }}
+          ANYLIST_PASSWORD: ${{ secrets.ANYLIST_PASSWORD }}
   publish:
     name: Publish
     runs-on: ubuntu-latest

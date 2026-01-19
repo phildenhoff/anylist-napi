@@ -8,7 +8,7 @@ version = "0.1.0"
 crate-type = ["cdylib"]
 
 [dependencies]
-anylist_rs = { version = "0.3.1", default-features = false, features = [
+anylist_rs = { version = "0.3.2", default-features = false, features = [
   "rustls-tls",
 ] }
 napi = { version = "3.0.0", features = ["tokio_rt"] }

@@ -4,7 +4,7 @@ use napi::bindgen_prelude::*;
 use napi_derive::napi;
 
 // Re-export anylist_rs types for internal use
-use anylist_rs::{AnyListClient as RsClient, List as RsList, ListItem as RsListItem, Recipe as RsRecipe, Ingredient as RsIngredient, SavedTokens as RsSavedTokens};
+use anylist_rs::{AnyListClient as RsClient, Ingredient as RsIngredient, List as RsList, ListItem as RsListItem, Recipe as RsRecipe, SavedTokens as RsSavedTokens};
 
 /// Convert AnyList errors to NAPI errors
 fn to_napi_error(err: anylist_rs::AnyListError) -> Error {
@@ -48,8 +48,8 @@ pub struct ListItem {
     pub id: String,
     pub name: String,
     pub checked: bool,
+    pub note: String,
     pub quantity: Option<String>,
-    pub note: Option<String>,
     pub category: Option<String>,
 }
 
@@ -60,7 +60,7 @@ impl From<&RsListItem> for ListItem {
             name: item.name().to_string(),
             checked: item.is_checked(),
             quantity: item.quantity().map(|s| s.to_string()),
-            note: None, // Note field doesn't exist in anylist_rs ListItem
+            note: item.details().to_owned(),
             category: item.category().map(|s| s.to_string()),
         }
     }

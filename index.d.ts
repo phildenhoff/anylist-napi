@@ -59,8 +59,8 @@ export interface ListItem {
   id: string;
   name: string;
   checked: boolean;
+  note: string;
   quantity?: string;
-  note?: string;
   category?: string;
 }
 
