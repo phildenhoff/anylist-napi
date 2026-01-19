@@ -84,6 +84,15 @@ main().catch(console.error);
 | **Lint & Format** | `bun run lint`                                     | Lint TypeScript with oxlint                                  |
 |                   | `bun run format`                                   | Format TypeScript and Rust code                              |
 
+### Integration tests
+
+You can run the integration tests with a real Anylist account.
+Each run will create a new list, named with the current time.
+
+```sh
+ANYLIST_EMAIL=<your email> ANYLIST_PASSWORD=<your password> bun run test
+```
+
 ## Platform Support
 
 Pre-built native binaries are available for:
