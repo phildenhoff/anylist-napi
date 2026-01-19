@@ -71,7 +71,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          cache: yarn
       - name: Install
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -143,7 +142,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node }}
-          cache: yarn
           architecture: ${{ matrix.settings.architecture }}
       - name: Install dependencies
         run: yarn install
@@ -180,7 +178,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node }}
-          cache: yarn
       - name: Output docker params
         id: docker
         run: |
@@ -256,7 +253,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 20
-          cache: yarn
       - name: Install dependencies
         run: yarn install
       - name: Download artifacts
@@ -289,7 +285,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          cache: yarn
       - name: Install dependencies
         run: yarn install
       - name: create npm dirs
