@@ -1,8 +1,30 @@
 {
   "name": "anylist-ts",
-  "module": "index.ts",
+  "version": "0.1.0",
   "type": "module",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "require": "./index.js"
+    }
+  },
+  "napi": {
+    "name": "anylist",
+    "triples": {
+      "defaults": true,
+      "additional": []
+    }
+  },
+  "scripts": {
+    "build": "napi build --platform --release --cargo-cwd ./native",
+    "build:debug": "napi build --platform --cargo-cwd ./native",
+    "prepublishOnly": "napi prepublish -t npm"
+  },
   "devDependencies": {
+    "@napi-rs/cli": "^2.18.0",
     "@types/bun": "latest"
   },
   "peerDependencies": {

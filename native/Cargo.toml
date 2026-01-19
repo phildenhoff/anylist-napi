@@ -1,0 +1,22 @@
+[package]
+name = "anylist-napi"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+anylist_rs = "0.3"
+napi = { version = "2", features = ["async", "napi4", "tokio_rt"] }
+napi-derive = "2"
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[build-dependencies]
+napi-build = "2"
+
+[profile.release]
+lto = true
+strip = true
