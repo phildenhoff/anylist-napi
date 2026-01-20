@@ -272,7 +272,7 @@ jobs:
         run: ls -R .
         shell: bash
       - name: Test bindings (Deno)
-        run: deno run --allow-ffi --allow-read --allow-env --allow-net npm:vitest run
+        run: deno test --allow-ffi --allow-read --allow-env --allow-net test/deno.test.ts
         env:
           ANYLIST_EMAIL: ${{ secrets.ANYLIST_EMAIL }}
           ANYLIST_PASSWORD: ${{ secrets.ANYLIST_PASSWORD }}
