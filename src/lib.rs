@@ -283,4 +283,14 @@ impl AnyListClient {
 
         Ok(())
     }
+
+    /// Delete a list
+    #[napi]
+    pub async fn delete_list(&self, list_id: String) -> Result<()> {
+        self.inner.delete_list(&list_id)
+            .await
+            .map_err(to_napi_error)?;
+
+        Ok(())
+    }
 }
