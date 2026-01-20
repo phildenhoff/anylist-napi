@@ -1,10 +1,16 @@
 import { test, expect, describe, beforeAll, afterAll } from "vitest";
 
 import { AnyListClient, type SavedTokens, type List } from "../index.js";
+import { shortId, dateStamp, testListName } from "./utils.js";
 
 const TEST_EMAIL = process.env.ANYLIST_EMAIL;
 const TEST_PASSWORD = process.env.ANYLIST_PASSWORD;
 const hasCredentials = Boolean(TEST_EMAIL && TEST_PASSWORD);
+
+/** Get platform identifier for test naming */
+function getPlatform(): string {
+  return process.env.TARGET || `${process.platform}-${process.arch}`;
+}
 
 describe("AnyListClient API", () => {
   test("exports AnyListClient class", () => {
@@ -53,6 +59,7 @@ describe("AnyListClient API", () => {
 
     expect(typeof client.getLists).toBe("function");
     expect(typeof client.createList).toBe("function");
+    expect(typeof client.deleteList).toBe("function");
     expect(typeof client.addItem).toBe("function");
     expect(typeof client.addItemWithDetails).toBe("function");
     expect(typeof client.deleteItem).toBe("function");
@@ -67,7 +74,7 @@ describe("AnyListClient API", () => {
 describe.runIf(hasCredentials)("AnyListClient Integration", () => {
   let client: AnyListClient;
   let testList: List;
-  const testListName = `CI Test ${Date.now()}`;
+  const listName = testListName("node", getPlatform());
   const addedItemIds: string[] = [];
 
   beforeAll(async () => {
@@ -75,13 +82,19 @@ describe.runIf(hasCredentials)("AnyListClient Integration", () => {
   });
 
   afterAll(async () => {
-    // Clean up: delete all items we created
+    // Clean up: delete the test list (and all its items)
     if (client && testList) {
-      for (const itemId of addedItemIds) {
-        try {
-          await client.deleteItem(testList.id, itemId);
-        } catch {
-          // Ignore cleanup errors
+      try {
+        await client.deleteList(testList.id);
+        console.log(`Cleaned up test list: ${listName}`);
+      } catch {
+        // Fallback: try to delete items if list deletion fails
+        for (const itemId of addedItemIds) {
+          try {
+            await client.deleteItem(testList.id, itemId);
+          } catch {
+            // Ignore cleanup errors
+          }
         }
       }
     }
@@ -122,10 +135,11 @@ describe.runIf(hasCredentials)("AnyListClient Integration", () => {
   });
 
   test("createList creates a new list", async () => {
-    testList = await client.createList(testListName);
+    console.log(`Creating test list: ${listName}`);
+    testList = await client.createList(listName);
 
     expect(testList).toHaveProperty("id");
-    expect(testList.name).toBe(testListName);
+    expect(testList.name).toBe(listName);
     expect(Array.isArray(testList.items)).toBe(true);
   });
 
@@ -208,5 +222,23 @@ describe.runIf(hasCredentials)("AnyListClient Integration", () => {
       expect(recipes[0]).toHaveProperty("name");
       expect(recipes[0]).toHaveProperty("ingredients");
     }
+  });
+
+  test("deleteList removes a list", async () => {
+    // Create a temporary list to delete
+    const tempListName = `CI delete-test ${shortId()} ${dateStamp()}`;
+    const tempList = await client.createList(tempListName);
+    expect(tempList.id).toBeTruthy();
+
+    // Verify it exists
+    let lists = await client.getLists();
+    expect(lists.some((l) => l.id === tempList.id)).toBe(true);
+
+    // Delete it
+    await client.deleteList(tempList.id);
+
+    // Verify it's gone
+    lists = await client.getLists();
+    expect(lists.some((l) => l.id === tempList.id)).toBe(false);
   });
 });
