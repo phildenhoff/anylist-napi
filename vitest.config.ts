@@ -8,6 +8,7 @@ export default defineConfig({
     maxWorkers: 1,
 
     include: ["test/**/*.{test,spec}.ts"],
+    exclude: ["test/deno.test.ts"],
     testTimeout: 120000, // 2m (matching AVA)
     globals: false,
 

@@ -5,6 +5,12 @@
  */
 
 import { AnyListClient, type SavedTokens } from "../index.js";
+import { shortId, dateStamp, testListName } from "./utils.ts";
+
+/** Get platform identifier for test naming */
+function getPlatform(): string {
+  return Deno.env.get("TARGET") || `${Deno.build.os}-${Deno.build.arch}`;
+}
 
 Deno.test("AnyListClient class is exported", () => {
   if (typeof AnyListClient !== "function") {
@@ -57,6 +63,7 @@ Deno.test("client has all expected methods", () => {
   const methods = [
     "getLists",
     "createList",
+    "deleteList",
     "addItem",
     "addItemWithDetails",
     "deleteItem",
@@ -105,10 +112,11 @@ if (email && password) {
       throw new Error("getLists should return an array");
     }
 
-    // Create a test list
-    const testListName = `Deno CI Test ${Date.now()}`;
-    const testList = await client.createList(testListName);
-    if (testList.name !== testListName) {
+    // Create a test list with identifiable name
+    const listName = testListName("deno", getPlatform());
+    console.log(`Creating test list: ${listName}`);
+    const testList = await client.createList(listName);
+    if (testList.name !== listName) {
       throw new Error("createList should return list with correct name");
     }
 
@@ -171,6 +179,33 @@ if (email && password) {
     if (!Array.isArray(recipes)) {
       throw new Error("getRecipes should return an array");
     }
+
+    // Test deleteList explicitly
+    const tempListName = `CI delete-test ${shortId()} ${dateStamp()}`;
+    const tempList = await client.createList(tempListName);
+    if (!tempList.id) {
+      throw new Error("Temp list should have an id");
+    }
+
+    // Verify temp list exists
+    let allLists = await client.getLists();
+    if (!allLists.some((l) => l.id === tempList.id)) {
+      throw new Error("Temp list should exist after creation");
+    }
+
+    // Delete temp list
+    await client.deleteList(tempList.id);
+
+    // Verify temp list is gone
+    allLists = await client.getLists();
+    if (allLists.some((l) => l.id === tempList.id)) {
+      throw new Error("Temp list should not exist after deletion");
+    }
+    console.log(`deleteList test passed: ${tempListName}`);
+
+    // Clean up: delete the main test list
+    await client.deleteList(testList.id);
+    console.log(`Cleaned up test list: ${listName}`);
 
     console.log("All Deno integration tests passed!");
   });
