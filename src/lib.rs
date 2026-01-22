@@ -4,7 +4,10 @@ use napi::bindgen_prelude::*;
 use napi_derive::napi;
 
 // Re-export anylist_rs types for internal use
-use anylist_rs::{AnyListClient as RsClient, Ingredient as RsIngredient, List as RsList, ListItem as RsListItem, Recipe as RsRecipe, SavedTokens as RsSavedTokens};
+use anylist_rs::{
+    AnyListClient as RsClient, Ingredient as RsIngredient, List as RsList, ListItem as RsListItem,
+    Recipe as RsRecipe, SavedTokens as RsSavedTokens,
+};
 
 /// Convert AnyList errors to NAPI errors
 fn to_napi_error(err: anylist_rs::AnyListError) -> Error {
@@ -152,8 +155,7 @@ impl AnyListClient {
     #[napi]
     pub fn from_tokens(tokens: SavedTokens) -> Result<AnyListClient> {
         let rs_tokens: RsSavedTokens = tokens.into();
-        let client = RsClient::from_tokens(rs_tokens)
-            .map_err(to_napi_error)?;
+        let client = RsClient::from_tokens(rs_tokens).map_err(to_napi_error)?;
 
         Ok(AnyListClient { inner: client })
     }
@@ -161,17 +163,14 @@ impl AnyListClient {
     /// Get the saved tokens for this session
     #[napi]
     pub fn get_tokens(&self) -> Result<SavedTokens> {
-        let tokens = self.inner.export_tokens()
-            .map_err(to_napi_error)?;
+        let tokens = self.inner.export_tokens().map_err(to_napi_error)?;
         Ok(tokens.into())
     }
 
     /// Get all lists
     #[napi]
     pub async fn get_lists(&self) -> Result<Vec<List>> {
-        let lists = self.inner.get_lists()
-            .await
-            .map_err(to_napi_error)?;
+        let lists = self.inner.get_lists().await.map_err(to_napi_error)?;
 
         Ok(lists.iter().map(List::from).collect())
     }
@@ -179,9 +178,7 @@ impl AnyListClient {
     /// Create a new list
     #[napi]
     pub async fn create_list(&self, name: String) -> Result<List> {
-        let list = self.inner.create_list(&name)
-            .await
-            .map_err(to_napi_error)?;
+        let list = self.inner.create_list(&name).await.map_err(to_napi_error)?;
 
         Ok(List::from(&list))
     }
@@ -189,7 +186,8 @@ impl AnyListClient {
     /// Add an item to a list
     #[napi]
     pub async fn add_item(&self, list_id: String, name: String) -> Result<()> {
-        self.inner.add_item(&list_id, &name)
+        self.inner
+            .add_item(&list_id, &name)
             .await
             .map_err(to_napi_error)?;
 
@@ -206,15 +204,16 @@ impl AnyListClient {
         note: Option<String>,
         category: Option<String>,
     ) -> Result<()> {
-        self.inner.add_item_with_details(
-            &list_id,
-            &name,
-            quantity.as_deref(),
-            note.as_deref(),
-            category.as_deref(),
-        )
-        .await
-        .map_err(to_napi_error)?;
+        self.inner
+            .add_item_with_details(
+                &list_id,
+                &name,
+                quantity.as_deref(),
+                note.as_deref(),
+                category.as_deref(),
+            )
+            .await
+            .map_err(to_napi_error)?;
 
         Ok(())
     }
@@ -222,7 +221,8 @@ impl AnyListClient {
     /// Delete an item from a list
     #[napi]
     pub async fn delete_item(&self, list_id: String, item_id: String) -> Result<()> {
-        self.inner.delete_item(&list_id, &item_id)
+        self.inner
+            .delete_item(&list_id, &item_id)
             .await
             .map_err(to_napi_error)?;
 
@@ -232,7 +232,8 @@ impl AnyListClient {
     /// Cross off (check) an item
     #[napi]
     pub async fn cross_off_item(&self, list_id: String, item_id: String) -> Result<()> {
-        self.inner.cross_off_item(&list_id, &item_id)
+        self.inner
+            .cross_off_item(&list_id, &item_id)
             .await
             .map_err(to_napi_error)?;
 
@@ -242,7 +243,8 @@ impl AnyListClient {
     /// Uncheck an item
     #[napi]
     pub async fn uncheck_item(&self, list_id: String, item_id: String) -> Result<()> {
-        self.inner.uncheck_item(&list_id, &item_id)
+        self.inner
+            .uncheck_item(&list_id, &item_id)
             .await
             .map_err(to_napi_error)?;
 
@@ -252,9 +254,7 @@ impl AnyListClient {
     /// Get all recipes
     #[napi]
     pub async fn get_recipes(&self) -> Result<Vec<Recipe>> {
-        let recipes = self.inner.get_recipes()
-            .await
-            .map_err(to_napi_error)?;
+        let recipes = self.inner.get_recipes().await.map_err(to_napi_error)?;
 
         Ok(recipes.iter().map(Recipe::from).collect())
     }
@@ -262,7 +262,9 @@ impl AnyListClient {
     /// Get a specific recipe by ID
     #[napi]
     pub async fn get_recipe_by_id(&self, recipe_id: String) -> Result<Recipe> {
-        let recipe = self.inner.get_recipe_by_id(&recipe_id)
+        let recipe = self
+            .inner
+            .get_recipe_by_id(&recipe_id)
             .await
             .map_err(to_napi_error)?;
 
@@ -277,7 +279,8 @@ impl AnyListClient {
         list_id: String,
         scale_factor: Option<f64>,
     ) -> Result<()> {
-        self.inner.add_recipe_to_list(&recipe_id, &list_id, scale_factor)
+        self.inner
+            .add_recipe_to_list(&recipe_id, &list_id, scale_factor)
             .await
             .map_err(to_napi_error)?;
 
@@ -287,7 +290,8 @@ impl AnyListClient {
     /// Delete a list
     #[napi]
     pub async fn delete_list(&self, list_id: String) -> Result<()> {
-        self.inner.delete_list(&list_id)
+        self.inner
+            .delete_list(&list_id)
             .await
             .map_err(to_napi_error)?;
 
