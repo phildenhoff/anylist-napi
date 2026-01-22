@@ -33,7 +33,7 @@
     "format": "bun run format:ts & bun run format:rs & wait",
     "format:ts": "oxfmt",
     "format:rs": "cargo fmt",
-    "lint": "oxlint",
+    "lint": "oxlint --ignore-pattern 'examples/**'",
     "prepublishOnly": "napi prepublish -t npm",
     "test": "vitest run",
     "test:watch": "vitest",
