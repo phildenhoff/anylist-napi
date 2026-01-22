@@ -8,8 +8,8 @@ env:
   push:
     branches:
       - main
-    tags-ignore:
-      - "**"
+    tags:
+      - "v*"
     paths-ignore:
       - "**/*.md"
       - LICENSE
@@ -17,6 +17,12 @@ env:
       - .editorconfig
       - docs/**
   pull_request: null
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to deploy (e.g. v1.0.0)"
+        required: true
+        type: string
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -279,6 +285,7 @@ jobs:
   publish:
     name: Publish
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
     permissions:
       contents: write
       id-token: write
@@ -288,7 +295,19 @@ jobs:
       - test-linux-binding
       - test-deno
     steps:
+      - name: Determine ref
+        id: ref
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "ref=refs/tags/${{ inputs.tag }}" >> $GITHUB_OUTPUT
+            echo "tag=${{ inputs.tag }}" >> $GITHUB_OUTPUT
+          else
+            echo "ref=${{ github.ref }}" >> $GITHUB_OUTPUT
+            echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          fi
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ steps.ref.outputs.ref }}
       - name: Setup node
         uses: actions/setup-node@v6
         with:
@@ -309,16 +328,14 @@ jobs:
       - name: Publish
         run: |
           npm config set provenance true
-          if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$";
-          then
-            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+          TAG="${{ steps.ref.outputs.tag }}"
+          if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Publishing $TAG as latest"
             npm publish --access public
-          elif git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+";
-          then
-            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-            npm publish --tag next --access public
           else
-            echo "Not a release, skipping publish"
+            echo "Publishing $TAG as next (prerelease)"
+            npm publish --tag next --access public
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
