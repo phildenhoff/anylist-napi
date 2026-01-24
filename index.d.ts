@@ -3,75 +3,125 @@
 /** The main AnyList client for interacting with the API */
 export declare class AnyListClient {
   /** Login to AnyList with email and password */
-  static login(email: string, password: string): Promise<AnyListClient>
+  static login(email: string, password: string): Promise<AnyListClient>;
   /** Create a client from saved tokens (for resuming sessions) */
-  static fromTokens(tokens: SavedTokens): AnyListClient
+  static fromTokens(tokens: SavedTokens): AnyListClient;
   /** Get the saved tokens for this session */
-  getTokens(): SavedTokens
+  getTokens(): SavedTokens;
   /** Get all lists */
-  getLists(): Promise<Array<List>>
+  getLists(): Promise<Array<List>>;
   /** Create a new list */
-  createList(name: string): Promise<List>
+  createList(name: string): Promise<List>;
   /** Add an item to a list */
-  addItem(listId: string, name: string): Promise<void>
+  addItem(listId: string, name: string): Promise<void>;
   /** Add an item with details to a list */
-  addItemWithDetails(listId: string, name: string, quantity?: string | undefined | null, note?: string | undefined | null, category?: string | undefined | null): Promise<void>
+  addItemWithDetails(
+    listId: string,
+    name: string,
+    quantity?: string | undefined | null,
+    note?: string | undefined | null,
+    category?: string | undefined | null,
+  ): Promise<void>;
   /** Delete an item from a list */
-  deleteItem(listId: string, itemId: string): Promise<void>
+  deleteItem(listId: string, itemId: string): Promise<void>;
   /** Cross off (check) an item */
-  crossOffItem(listId: string, itemId: string): Promise<void>
+  crossOffItem(listId: string, itemId: string): Promise<void>;
   /** Uncheck an item */
-  uncheckItem(listId: string, itemId: string): Promise<void>
+  uncheckItem(listId: string, itemId: string): Promise<void>;
   /** Get all recipes */
-  getRecipes(): Promise<Array<Recipe>>
+  getRecipes(): Promise<Array<Recipe>>;
   /** Get a specific recipe by ID */
-  getRecipeById(recipeId: string): Promise<Recipe>
+  getRecipeById(recipeId: string): Promise<Recipe>;
+  /** Create a new recipe with full metadata support */
+  createRecipe(options: CreateRecipeOptions): Promise<Recipe>;
   /** Add recipe ingredients to a list with optional scale factor */
-  addRecipeToList(recipeId: string, listId: string, scaleFactor?: number | undefined | null): Promise<void>
+  addRecipeToList(
+    recipeId: string,
+    listId: string,
+    scaleFactor?: number | undefined | null,
+  ): Promise<void>;
   /** Delete a list */
-  deleteList(listId: string): Promise<void>
+  deleteList(listId: string): Promise<void>;
+}
+
+/** Options for creating a new recipe */
+export interface CreateRecipeOptions {
+  /** Recipe name (required) */
+  name: string;
+  /** List of ingredients */
+  ingredients: Array<IngredientInput>;
+  /** Preparation/cooking steps */
+  preparationSteps: Array<string>;
+  /** Recipe notes/description */
+  note?: string;
+  /** Source name (e.g., "Web", "Cookbook") */
+  sourceName?: string;
+  /** Source URL */
+  sourceUrl?: string;
+  /** Serving size (e.g., "4 servings") */
+  servings?: string;
+  /** Prep time in minutes */
+  prepTime?: number;
+  /** Cook time in minutes */
+  cookTime?: number;
+  /** Rating from 1-5 */
+  rating?: number;
+  /** Nutritional information */
+  nutritionalInfo?: string;
 }
 
 /** A recipe ingredient */
 export interface Ingredient {
-  name: string
-  quantity?: string
-  note?: string
+  name: string;
+  quantity?: string;
+  note?: string;
+}
+
+/** Input for creating a new ingredient */
+export interface IngredientInput {
+  name: string;
+  quantity?: string;
+  note?: string;
 }
 
 /** A grocery list */
 export interface List {
-  id: string
-  name: string
-  items: Array<ListItem>
+  id: string;
+  name: string;
+  items: Array<ListItem>;
 }
 
 /** A grocery list item */
 export interface ListItem {
-  id: string
-  name: string
-  checked: boolean
-  note: string
-  quantity?: string
-  category?: string
+  id: string;
+  name: string;
+  checked: boolean;
+  note: string;
+  quantity?: string;
+  category?: string;
 }
 
 /** A recipe */
 export interface Recipe {
-  id: string
-  name: string
-  ingredients: Array<Ingredient>
-  note?: string
-  sourceUrl?: string
-  servings?: string
-  prepTime?: string
-  cookTime?: string
+  id: string;
+  name: string;
+  ingredients: Array<Ingredient>;
+  preparationSteps: Array<string>;
+  note?: string;
+  sourceName?: string;
+  sourceUrl?: string;
+  servings?: string;
+  prepTime?: number;
+  cookTime?: number;
+  rating?: number;
+  nutritionalInfo?: string;
+  photoId?: string;
 }
 
 /** Saved authentication tokens for resuming sessions */
 export interface SavedTokens {
-  userId: string
-  accessToken: string
-  refreshToken: string
-  isPremiumUser: boolean
+  userId: string;
+  accessToken: string;
+  refreshToken: string;
+  isPremiumUser: boolean;
 }

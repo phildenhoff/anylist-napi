@@ -6,8 +6,29 @@ use napi_derive::napi;
 // Re-export anylist_rs types for internal use
 use anylist_rs::{
     AnyListClient as RsClient, Ingredient as RsIngredient, List as RsList, ListItem as RsListItem,
-    Recipe as RsRecipe, SavedTokens as RsSavedTokens,
+    Recipe as RsRecipe, RecipeBuilder, SavedTokens as RsSavedTokens,
 };
+
+/// Input for creating a new ingredient
+#[napi(object)]
+pub struct IngredientInput {
+    pub name: String,
+    pub quantity: Option<String>,
+    pub note: Option<String>,
+}
+
+impl From<&IngredientInput> for RsIngredient {
+    fn from(input: &IngredientInput) -> Self {
+        let mut ingredient = RsIngredient::new(&input.name);
+        if let Some(ref qty) = input.quantity {
+            ingredient = ingredient.quantity_of(qty);
+        }
+        if let Some(ref note) = input.note {
+            ingredient = ingredient.note_of(note);
+        }
+        ingredient
+    }
+}
 
 /// Convert AnyList errors to NAPI errors
 fn to_napi_error(err: anylist_rs::AnyListError) -> Error {
@@ -111,11 +132,43 @@ pub struct Recipe {
     pub id: String,
     pub name: String,
     pub ingredients: Vec<Ingredient>,
+    pub preparation_steps: Vec<String>,
     pub note: Option<String>,
+    pub source_name: Option<String>,
     pub source_url: Option<String>,
     pub servings: Option<String>,
-    pub prep_time: Option<String>,
-    pub cook_time: Option<String>,
+    pub prep_time: Option<i32>,
+    pub cook_time: Option<i32>,
+    pub rating: Option<i32>,
+    pub nutritional_info: Option<String>,
+    pub photo_id: Option<String>,
+}
+
+/// Options for creating a new recipe
+#[napi(object)]
+pub struct CreateRecipeOptions {
+    /// Recipe name (required)
+    pub name: String,
+    /// List of ingredients
+    pub ingredients: Vec<IngredientInput>,
+    /// Preparation/cooking steps
+    pub preparation_steps: Vec<String>,
+    /// Recipe notes/description
+    pub note: Option<String>,
+    /// Source name (e.g., "Web", "Cookbook")
+    pub source_name: Option<String>,
+    /// Source URL
+    pub source_url: Option<String>,
+    /// Serving size (e.g., "4 servings")
+    pub servings: Option<String>,
+    /// Prep time in minutes
+    pub prep_time: Option<i32>,
+    /// Cook time in minutes
+    pub cook_time: Option<i32>,
+    /// Rating from 1-5
+    pub rating: Option<i32>,
+    /// Nutritional information
+    pub nutritional_info: Option<String>,
 }
 
 impl From<&RsRecipe> for Recipe {
@@ -124,11 +177,20 @@ impl From<&RsRecipe> for Recipe {
             id: recipe.id().to_string(),
             name: recipe.name().to_string(),
             ingredients: recipe.ingredients().iter().map(Ingredient::from).collect(),
+            preparation_steps: recipe
+                .preparation_steps()
+                .iter()
+                .map(|s| s.to_string())
+                .collect(),
             note: recipe.note().map(|s| s.to_string()),
+            source_name: recipe.source_name().map(|s| s.to_string()),
             source_url: recipe.source_url().map(|s| s.to_string()),
             servings: recipe.servings().map(|s| s.to_string()),
-            prep_time: recipe.prep_time().map(|s| s.to_string()),
-            cook_time: recipe.cook_time().map(|s| s.to_string()),
+            prep_time: recipe.prep_time(),
+            cook_time: recipe.cook_time(),
+            rating: recipe.rating(),
+            nutritional_info: recipe.nutritional_info().map(|s| s.to_string()),
+            photo_id: recipe.photo_id().map(|s| s.to_string()),
         }
     }
 }
@@ -267,6 +329,46 @@ impl AnyListClient {
             .get_recipe_by_id(&recipe_id)
             .await
             .map_err(to_napi_error)?;
+
+        Ok(Recipe::from(&recipe))
+    }
+
+    /// Create a new recipe with full metadata support
+    #[napi]
+    pub async fn create_recipe(&self, options: CreateRecipeOptions) -> Result<Recipe> {
+        let rs_ingredients: Vec<RsIngredient> =
+            options.ingredients.iter().map(RsIngredient::from).collect();
+
+        let mut builder = RecipeBuilder::new(&options.name)
+            .ingredients(rs_ingredients)
+            .preparation_steps(options.preparation_steps);
+
+        if let Some(note) = options.note {
+            builder = builder.note(note);
+        }
+        if let Some(source_name) = options.source_name {
+            builder = builder.source_name(source_name);
+        }
+        if let Some(source_url) = options.source_url {
+            builder = builder.source_url(source_url);
+        }
+        if let Some(servings) = options.servings {
+            builder = builder.servings(servings);
+        }
+        if let Some(prep_time) = options.prep_time {
+            builder = builder.prep_time(prep_time);
+        }
+        if let Some(cook_time) = options.cook_time {
+            builder = builder.cook_time(cook_time);
+        }
+        if let Some(rating) = options.rating {
+            builder = builder.rating(rating);
+        }
+        if let Some(nutritional_info) = options.nutritional_info {
+            builder = builder.nutritional_info(nutritional_info);
+        }
+
+        let recipe = builder.save(&self.inner).await.map_err(to_napi_error)?;
 
         Ok(Recipe::from(&recipe))
     }

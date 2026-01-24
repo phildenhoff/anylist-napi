@@ -67,6 +67,7 @@ describe("AnyListClient API", () => {
     expect(typeof client.uncheckItem).toBe("function");
     expect(typeof client.getRecipes).toBe("function");
     expect(typeof client.getRecipeById).toBe("function");
+    expect(typeof client.createRecipe).toBe("function");
     expect(typeof client.addRecipeToList).toBe("function");
   });
 });
@@ -221,7 +222,51 @@ describe.runIf(hasCredentials)("AnyListClient Integration", () => {
       expect(recipes[0]).toHaveProperty("id");
       expect(recipes[0]).toHaveProperty("name");
       expect(recipes[0]).toHaveProperty("ingredients");
+      expect(recipes[0]).toHaveProperty("preparationSteps");
     }
+  });
+
+  test("createRecipe creates a new recipe with all options", async () => {
+    const recipeName = `CI Recipe ${shortId()} ${dateStamp()}`;
+
+    const recipe = await client.createRecipe({
+      name: recipeName,
+      ingredients: [
+        { name: "Flour", quantity: "2 cups" },
+        { name: "Salt", quantity: "1 tsp", note: "optional" },
+      ],
+      preparationSteps: [
+        "Mix dry ingredients",
+        "Add water",
+        "Knead until smooth",
+      ],
+      note: "Test recipe note",
+      sourceName: "CI Test",
+      sourceUrl: "https://example.com/recipe",
+      servings: "4",
+      prepTime: 15,
+      cookTime: 30,
+      rating: 5,
+    });
+
+    expect(recipe).toHaveProperty("id");
+    expect(recipe.name).toBe(recipeName);
+    expect(recipe.ingredients).toHaveLength(2);
+    expect(recipe.ingredients[0].name).toBe("Flour");
+    expect(recipe.ingredients[0].quantity).toBe("2 cups");
+    expect(recipe.preparationSteps).toHaveLength(3);
+    expect(recipe.note).toBe("Test recipe note");
+    expect(recipe.sourceName).toBe("CI Test");
+    expect(recipe.sourceUrl).toBe("https://example.com/recipe");
+    expect(recipe.servings).toBe("4");
+    expect(recipe.prepTime).toBe(15);
+    expect(recipe.cookTime).toBe(30);
+    expect(recipe.rating).toBe(5);
+
+    // Verify we can fetch it back
+    const fetchedRecipe = await client.getRecipeById(recipe.id);
+    expect(fetchedRecipe.name).toBe(recipeName);
+    expect(fetchedRecipe.note).toBe("Test recipe note");
   });
 
   test("deleteList removes a list", async () => {
