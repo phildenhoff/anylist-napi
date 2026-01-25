@@ -1,6 +1,7 @@
 {
   "name": "anylist-napi",
   "version": "1.0.1",
+  "type": "module",
   "description": "Typescript bindings for anylist_rs",
   "keywords": [
     "N-API",
@@ -20,6 +21,13 @@
     "index.js"
   ],
   "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js"
+    }
+  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
