@@ -1,7 +1,6 @@
 {
   "name": "anylist-napi",
   "version": "1.0.2",
-  "type": "module",
   "description": "Typescript bindings for anylist_rs",
   "keywords": [
     "N-API",
@@ -20,6 +19,7 @@
     "index.d.ts",
     "index.js"
   ],
+  "type": "module",
   "main": "index.js",
   "types": "index.d.ts",
   "exports": {
@@ -65,7 +65,9 @@
       "x86_64-apple-darwin",
       "x86_64-unknown-linux-gnu",
       "x86_64-unknown-linux-musl",
-      "aarch64-apple-darwin"
+      "aarch64-apple-darwin",
+      "aarch64-unknown-linux-gnu",
+      "aarch64-unknown-linux-musl"
     ]
   },
   "engines": {
