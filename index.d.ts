@@ -75,6 +75,120 @@ export declare class AnyListClient {
    * Returns the photo ID which can be used with createRecipe
    */
   uploadPhoto(data: Buffer, filename: string): Promise<string>;
+  /** Create a new category in a list */
+  createCategory(
+    listId: string,
+    categoryGroupId: string,
+    name: string,
+  ): Promise<Category>;
+  /** Delete a category from a list */
+  deleteCategory(listId: string, categoryId: string): Promise<void>;
+  /** Rename a category */
+  renameCategory(
+    listId: string,
+    categoryGroupId: string,
+    categoryId: string,
+    newName: string,
+  ): Promise<void>;
+  /** Get all stores for a list */
+  getStoresForList(listId: string): Promise<Array<Store>>;
+  /** Create a new store for a list */
+  createStore(listId: string, name: string): Promise<Store>;
+  /** Update a store's name */
+  updateStore(listId: string, storeId: string, newName: string): Promise<void>;
+  /** Get store filters for a list */
+  getStoreFiltersForList(listId: string): Promise<Array<StoreFilter>>;
+  /** Delete a store from a list */
+  deleteStore(listId: string, storeId: string): Promise<void>;
+  /** Get all favourite items across all lists */
+  getFavourites(): Promise<Array<FavouriteItem>>;
+  /** Get all favourites lists (starter lists) */
+  getFavouritesLists(): Promise<Array<FavouritesList>>;
+  /** Get favourites for a specific shopping list */
+  getFavouritesForList(shoppingListId: string): Promise<FavouritesList>;
+  /** Add a favourite item to the default list */
+  addFavourite(
+    name: string,
+    category?: string | undefined | null,
+  ): Promise<FavouriteItem>;
+  /** Add a favourite item to a specific list */
+  addFavouriteToList(
+    listId: string,
+    name: string,
+    category?: string | undefined | null,
+  ): Promise<FavouriteItem>;
+  /** Remove a favourite item from a list */
+  removeFavourite(listId: string, itemId: string): Promise<void>;
+  /** Add a favourite item to a shopping list */
+  addFavouriteToShoppingList(
+    favouriteListId: string,
+    favouriteId: string,
+    shoppingListId: string,
+  ): Promise<ListItem>;
+  /** Get meal plan events for a date range */
+  getMealPlanEvents(
+    startDate: string,
+    endDate: string,
+  ): Promise<Array<MealPlanEvent>>;
+  /** Create a meal plan event */
+  createMealPlanEvent(
+    calendarId: string,
+    date: string,
+    recipeId?: string | undefined | null,
+    title?: string | undefined | null,
+    labelId?: string | undefined | null,
+  ): Promise<MealPlanEvent>;
+  /** Update a meal plan event */
+  updateMealPlanEvent(
+    calendarId: string,
+    eventId: string,
+    date: string,
+    recipeId?: string | undefined | null,
+    title?: string | undefined | null,
+    labelId?: string | undefined | null,
+  ): Promise<void>;
+  /** Delete a meal plan event */
+  deleteMealPlanEvent(calendarId: string, eventId: string): Promise<void>;
+  /** Add meal plan ingredients to a shopping list */
+  addMealPlanIngredientsToList(
+    listId: string,
+    startDate: string,
+    endDate: string,
+  ): Promise<void>;
+  /** Enable iCalendar sync and get the URL */
+  enableIcalendar(): Promise<ICalendarInfo>;
+  /** Disable iCalendar sync */
+  disableIcalendar(): Promise<void>;
+  /** Get the iCalendar URL if enabled */
+  getIcalendarUrl(): Promise<string | null>;
+  /** Get all recipe collections */
+  getRecipeCollections(): Promise<Array<RecipeCollection>>;
+  /** Create a new recipe collection */
+  createRecipeCollection(name: string): Promise<RecipeCollection>;
+  /** Delete a recipe collection */
+  deleteRecipeCollection(collectionId: string): Promise<void>;
+  /** Add a recipe to a collection */
+  addRecipeToCollection(collectionId: string, recipeId: string): Promise<void>;
+  /** Remove a recipe from a collection */
+  removeRecipeFromCollection(
+    collectionId: string,
+    recipeId: string,
+  ): Promise<void>;
+}
+
+/** A category for organizing list items */
+export interface Category {
+  id: string;
+  name: string;
+  icon?: string;
+  sortIndex: number;
+}
+
+/** A group of categories */
+export interface CategoryGroup {
+  id: string;
+  name: string;
+  categories: Array<Category>;
 }
 
 /** Options for creating a new recipe */
@@ -103,6 +217,31 @@ export interface CreateRecipeOptions {
   nutritionalInfo?: string;
   /** Photo ID (from upload_photo) */
   photoId?: string;
+}
+
+/** A favourite item (starter list item) */
+export interface FavouriteItem {
+  id: string;
+  listId: string;
+  name: string;
+  quantity?: string;
+  details?: string;
+  category?: string;
+}
+
+/** A list of favourite items (starter list) */
+export interface FavouritesList {
+  id: string;
+  name: string;
+  items: Array<FavouriteItem>;
+  shoppingListId?: string;
+}
+
+/** iCalendar sync information */
+export interface ICalendarInfo {
+  enabled: boolean;
+  url?: string;
+  token?: string;
 }
 
 /** A recipe ingredient */
@@ -136,6 +275,16 @@ export interface ListItem {
   category?: string;
 }
 
+/** A meal plan event */
+export interface MealPlanEvent {
+  id: string;
+  date: string;
+  title?: string;
+  recipeId?: string;
+  labelId?: string;
+  details?: string;
+}
+
 /** A recipe */
 export interface Recipe {
   id: string;
@@ -153,10 +302,31 @@ export interface Recipe {
   photoId?: string;
 }
 
+/** A collection of recipes */
+export interface RecipeCollection {
+  id: string;
+  name: string;
+  recipeIds: Array<string>;
+}
+
 /** Saved authentication tokens for resuming sessions */
 export interface SavedTokens {
   userId: string;
   accessToken: string;
   refreshToken: string;
   isPremiumUser: boolean;
+}
+
+/** A store for organizing where to buy items */
+export interface Store {
+  id: string;
+  name: string;
+  sortIndex: number;
+}
+
+/** A filter for stores */
+export interface StoreFilter {
+  id: string;
+  name: string;
+  storeIds: Array<string>;
 }
