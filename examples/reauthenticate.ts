@@ -1,4 +1,4 @@
-import { AnyListClient } from "anylist-napi";
+import { AnyListClient } from "@anylist-napi/anylist-napi";
 
 // Login with email and password
 const client = await AnyListClient.login(

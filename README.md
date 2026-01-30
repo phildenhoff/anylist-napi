@@ -5,9 +5,9 @@ TypeScript/JavaScript bindings for [anylist_rs](https://github.com/phildenhoff/a
 ## Installation
 
 ```bash
-pnpm add anylist-napi
+pnpm add @anylist-napi/anylist-napi
 # or
-bun add anylist-napi
+bun add @anylist-napi/anylist-napi
 ```
 
 ## Runtime Support
@@ -23,7 +23,7 @@ This package targets multiple JavaScript runtimes:
 See [examples/](./examples/) for more.
 
 ```typescript
-import { AnyListClient } from "anylist-napi";
+import { AnyListClient } from "@anylist-napi/anylist-napi";
 
 async function main() {
   const email = process.env.ANYLIST_EMAIL;
