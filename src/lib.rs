@@ -247,15 +247,51 @@ impl AnyListClient {
         Ok(List::from(&list))
     }
 
-    /// Add an item to a list
+    /// Get a specific list by ID
     #[napi]
-    pub async fn add_item(&self, list_id: String, name: String) -> Result<()> {
+    pub async fn get_list_by_id(&self, list_id: String) -> Result<List> {
+        let list = self
+            .inner
+            .get_list_by_id(&list_id)
+            .await
+            .map_err(to_napi_error)?;
+
+        Ok(List::from(&list))
+    }
+
+    /// Get a list by name
+    #[napi]
+    pub async fn get_list_by_name(&self, name: String) -> Result<List> {
+        let list = self
+            .inner
+            .get_list_by_name(&name)
+            .await
+            .map_err(to_napi_error)?;
+
+        Ok(List::from(&list))
+    }
+
+    /// Rename a list
+    #[napi]
+    pub async fn rename_list(&self, list_id: String, new_name: String) -> Result<()> {
         self.inner
-            .add_item(&list_id, &name)
+            .rename_list(&list_id, &new_name)
             .await
             .map_err(to_napi_error)?;
 
         Ok(())
+    }
+
+    /// Add an item to a list
+    #[napi]
+    pub async fn add_item(&self, list_id: String, name: String) -> Result<ListItem> {
+        let item = self
+            .inner
+            .add_item(&list_id, &name)
+            .await
+            .map_err(to_napi_error)?;
+
+        Ok(ListItem::from(&item))
     }
 
     /// Add an item with details to a list
@@ -267,8 +303,9 @@ impl AnyListClient {
         quantity: Option<String>,
         note: Option<String>,
         category: Option<String>,
-    ) -> Result<()> {
-        self.inner
+    ) -> Result<ListItem> {
+        let item = self
+            .inner
             .add_item_with_details(
                 &list_id,
                 &name,
@@ -279,7 +316,7 @@ impl AnyListClient {
             .await
             .map_err(to_napi_error)?;
 
-        Ok(())
+        Ok(ListItem::from(&item))
     }
 
     /// Delete an item from a list
@@ -315,6 +352,55 @@ impl AnyListClient {
         Ok(())
     }
 
+    /// Update an existing item
+    #[napi]
+    pub async fn update_item(
+        &self,
+        list_id: String,
+        item_id: String,
+        name: String,
+        quantity: Option<String>,
+        note: Option<String>,
+        category: Option<String>,
+    ) -> Result<()> {
+        self.inner
+            .update_item(
+                &list_id,
+                &item_id,
+                &name,
+                quantity.as_deref(),
+                note.as_deref(),
+                category.as_deref(),
+            )
+            .await
+            .map_err(to_napi_error)?;
+
+        Ok(())
+    }
+
+    /// Delete multiple items at once
+    #[napi]
+    pub async fn bulk_delete_items(&self, list_id: String, item_ids: Vec<String>) -> Result<()> {
+        let item_id_refs: Vec<&str> = item_ids.iter().map(|s| s.as_str()).collect();
+        self.inner
+            .bulk_delete_items(&list_id, &item_id_refs)
+            .await
+            .map_err(to_napi_error)?;
+
+        Ok(())
+    }
+
+    /// Delete all crossed off (checked) items from a list
+    #[napi]
+    pub async fn delete_all_crossed_off_items(&self, list_id: String) -> Result<()> {
+        self.inner
+            .delete_all_crossed_off_items(&list_id)
+            .await
+            .map_err(to_napi_error)?;
+
+        Ok(())
+    }
+
     /// Get all recipes
     #[napi]
     pub async fn get_recipes(&self) -> Result<Vec<Recipe>> {
@@ -329,6 +415,18 @@ impl AnyListClient {
         let recipe = self
             .inner
             .get_recipe_by_id(&recipe_id)
+            .await
+            .map_err(to_napi_error)?;
+
+        Ok(Recipe::from(&recipe))
+    }
+
+    /// Get a recipe by name
+    #[napi]
+    pub async fn get_recipe_by_name(&self, name: String) -> Result<Recipe> {
+        let recipe = self
+            .inner
+            .get_recipe_by_name(&name)
             .await
             .map_err(to_napi_error)?;
 
@@ -388,6 +486,73 @@ impl AnyListClient {
     ) -> Result<()> {
         self.inner
             .add_recipe_to_list(&recipe_id, &list_id, scale_factor)
+            .await
+            .map_err(to_napi_error)?;
+
+        Ok(())
+    }
+
+    /// Update an existing recipe
+    /// Note: The recipe name cannot be changed (use the existing name in options)
+    #[napi]
+    pub async fn update_recipe(
+        &self,
+        recipe_id: String,
+        options: CreateRecipeOptions,
+    ) -> Result<Recipe> {
+        // Fetch the existing recipe to use as base for the builder
+        let existing = self
+            .inner
+            .get_recipe_by_id(&recipe_id)
+            .await
+            .map_err(to_napi_error)?;
+
+        let rs_ingredients: Vec<RsIngredient> =
+            options.ingredients.iter().map(RsIngredient::from).collect();
+
+        // Start from existing recipe (preserves the ID for update)
+        let mut builder = RecipeBuilder::from(&existing)
+            .ingredients(rs_ingredients)
+            .preparation_steps(options.preparation_steps);
+
+        if let Some(note) = options.note {
+            builder = builder.note(note);
+        }
+        if let Some(source_name) = options.source_name {
+            builder = builder.source_name(source_name);
+        }
+        if let Some(source_url) = options.source_url {
+            builder = builder.source_url(source_url);
+        }
+        if let Some(servings) = options.servings {
+            builder = builder.servings(servings);
+        }
+        if let Some(prep_time) = options.prep_time {
+            builder = builder.prep_time(prep_time);
+        }
+        if let Some(cook_time) = options.cook_time {
+            builder = builder.cook_time(cook_time);
+        }
+        if let Some(rating) = options.rating {
+            builder = builder.rating(rating);
+        }
+        if let Some(nutritional_info) = options.nutritional_info {
+            builder = builder.nutritional_info(nutritional_info);
+        }
+        if let Some(photo_id) = options.photo_id {
+            builder = builder.photo_id(photo_id);
+        }
+
+        let recipe = builder.save(&self.inner).await.map_err(to_napi_error)?;
+
+        Ok(Recipe::from(&recipe))
+    }
+
+    /// Delete a recipe
+    #[napi]
+    pub async fn delete_recipe(&self, recipe_id: String) -> Result<()> {
+        self.inner
+            .delete_recipe(&recipe_id)
             .await
             .map_err(to_napi_error)?;
 

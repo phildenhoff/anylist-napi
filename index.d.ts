@@ -12,8 +12,14 @@ export declare class AnyListClient {
   getLists(): Promise<Array<List>>;
   /** Create a new list */
   createList(name: string): Promise<List>;
+  /** Get a specific list by ID */
+  getListById(listId: string): Promise<List>;
+  /** Get a list by name */
+  getListByName(name: string): Promise<List>;
+  /** Rename a list */
+  renameList(listId: string, newName: string): Promise<void>;
   /** Add an item to a list */
-  addItem(listId: string, name: string): Promise<void>;
+  addItem(listId: string, name: string): Promise<ListItem>;
   /** Add an item with details to a list */
   addItemWithDetails(
     listId: string,
@@ -21,17 +27,32 @@ export declare class AnyListClient {
     quantity?: string | undefined | null,
     note?: string | undefined | null,
     category?: string | undefined | null,
-  ): Promise<void>;
+  ): Promise<ListItem>;
   /** Delete an item from a list */
   deleteItem(listId: string, itemId: string): Promise<void>;
   /** Cross off (check) an item */
   crossOffItem(listId: string, itemId: string): Promise<void>;
   /** Uncheck an item */
   uncheckItem(listId: string, itemId: string): Promise<void>;
+  /** Update an existing item */
+  updateItem(
+    listId: string,
+    itemId: string,
+    name: string,
+    quantity?: string | undefined | null,
+    note?: string | undefined | null,
+    category?: string | undefined | null,
+  ): Promise<void>;
+  /** Delete multiple items at once */
+  bulkDeleteItems(listId: string, itemIds: Array<string>): Promise<void>;
+  /** Delete all crossed off (checked) items from a list */
+  deleteAllCrossedOffItems(listId: string): Promise<void>;
   /** Get all recipes */
   getRecipes(): Promise<Array<Recipe>>;
   /** Get a specific recipe by ID */
   getRecipeById(recipeId: string): Promise<Recipe>;
+  /** Get a recipe by name */
+  getRecipeByName(name: string): Promise<Recipe>;
   /** Create a new recipe with full metadata support */
   createRecipe(options: CreateRecipeOptions): Promise<Recipe>;
   /** Add recipe ingredients to a list with optional scale factor */
@@ -40,6 +61,13 @@ export declare class AnyListClient {
     listId: string,
     scaleFactor?: number | undefined | null,
   ): Promise<void>;
+  /**
+   * Update an existing recipe
+   * Note: The recipe name cannot be changed (use the existing name in options)
+   */
+  updateRecipe(recipeId: string, options: CreateRecipeOptions): Promise<Recipe>;
+  /** Delete a recipe */
+  deleteRecipe(recipeId: string): Promise<void>;
   /** Delete a list */
   deleteList(listId: string): Promise<void>;
   /**
