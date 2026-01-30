@@ -81,16 +81,16 @@ function requireNative() {
         loadErrors.push(e);
       }
       try {
-        const binding = require("anylist-napi-android-arm64");
+        const binding = require("@anylist-napi/anylist-napi-android-arm64");
         const bindingPackageVersion =
-          require("anylist-napi-android-arm64/package.json").version;
+          require("@anylist-napi/anylist-napi-android-arm64/package.json").version;
         if (
-          bindingPackageVersion !== "1.0.3" &&
+          bindingPackageVersion !== "1.1.1" &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
         ) {
           throw new Error(
-            `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+            `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
           );
         }
         return binding;
@@ -104,16 +104,16 @@ function requireNative() {
         loadErrors.push(e);
       }
       try {
-        const binding = require("anylist-napi-android-arm-eabi");
+        const binding = require("@anylist-napi/anylist-napi-android-arm-eabi");
         const bindingPackageVersion =
-          require("anylist-napi-android-arm-eabi/package.json").version;
+          require("@anylist-napi/anylist-napi-android-arm-eabi/package.json").version;
         if (
-          bindingPackageVersion !== "1.0.3" &&
+          bindingPackageVersion !== "1.1.1" &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
         ) {
           throw new Error(
-            `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+            `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
           );
         }
         return binding;
@@ -137,16 +137,16 @@ function requireNative() {
           loadErrors.push(e);
         }
         try {
-          const binding = require("anylist-napi-win32-x64-gnu");
+          const binding = require("@anylist-napi/anylist-napi-win32-x64-gnu");
           const bindingPackageVersion =
-            require("anylist-napi-win32-x64-gnu/package.json").version;
+            require("@anylist-napi/anylist-napi-win32-x64-gnu/package.json").version;
           if (
-            bindingPackageVersion !== "1.0.3" &&
+            bindingPackageVersion !== "1.1.1" &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
           ) {
             throw new Error(
-              `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+              `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
             );
           }
           return binding;
@@ -160,16 +160,16 @@ function requireNative() {
           loadErrors.push(e);
         }
         try {
-          const binding = require("anylist-napi-win32-x64-msvc");
+          const binding = require("@anylist-napi/anylist-napi-win32-x64-msvc");
           const bindingPackageVersion =
-            require("anylist-napi-win32-x64-msvc/package.json").version;
+            require("@anylist-napi/anylist-napi-win32-x64-msvc/package.json").version;
           if (
-            bindingPackageVersion !== "1.0.3" &&
+            bindingPackageVersion !== "1.1.1" &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
           ) {
             throw new Error(
-              `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+              `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
             );
           }
           return binding;
@@ -184,16 +184,16 @@ function requireNative() {
         loadErrors.push(e);
       }
       try {
-        const binding = require("anylist-napi-win32-ia32-msvc");
+        const binding = require("@anylist-napi/anylist-napi-win32-ia32-msvc");
         const bindingPackageVersion =
-          require("anylist-napi-win32-ia32-msvc/package.json").version;
+          require("@anylist-napi/anylist-napi-win32-ia32-msvc/package.json").version;
         if (
-          bindingPackageVersion !== "1.0.3" &&
+          bindingPackageVersion !== "1.1.1" &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
         ) {
           throw new Error(
-            `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+            `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
           );
         }
         return binding;
@@ -207,16 +207,16 @@ function requireNative() {
         loadErrors.push(e);
       }
       try {
-        const binding = require("anylist-napi-win32-arm64-msvc");
+        const binding = require("@anylist-napi/anylist-napi-win32-arm64-msvc");
         const bindingPackageVersion =
-          require("anylist-napi-win32-arm64-msvc/package.json").version;
+          require("@anylist-napi/anylist-napi-win32-arm64-msvc/package.json").version;
         if (
-          bindingPackageVersion !== "1.0.3" &&
+          bindingPackageVersion !== "1.1.1" &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
         ) {
           throw new Error(
-            `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+            `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
           );
         }
         return binding;
@@ -235,16 +235,16 @@ function requireNative() {
       loadErrors.push(e);
     }
     try {
-      const binding = require("anylist-napi-darwin-universal");
+      const binding = require("@anylist-napi/anylist-napi-darwin-universal");
       const bindingPackageVersion =
-        require("anylist-napi-darwin-universal/package.json").version;
+        require("@anylist-napi/anylist-napi-darwin-universal/package.json").version;
       if (
-        bindingPackageVersion !== "1.0.3" &&
+        bindingPackageVersion !== "1.1.1" &&
         process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
         process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
       ) {
         throw new Error(
-          `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+          `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
         );
       }
       return binding;
@@ -258,16 +258,16 @@ function requireNative() {
         loadErrors.push(e);
       }
       try {
-        const binding = require("anylist-napi-darwin-x64");
+        const binding = require("@anylist-napi/anylist-napi-darwin-x64");
         const bindingPackageVersion =
-          require("anylist-napi-darwin-x64/package.json").version;
+          require("@anylist-napi/anylist-napi-darwin-x64/package.json").version;
         if (
-          bindingPackageVersion !== "1.0.3" &&
+          bindingPackageVersion !== "1.1.1" &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
         ) {
           throw new Error(
-            `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+            `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
           );
         }
         return binding;
@@ -281,16 +281,16 @@ function requireNative() {
         loadErrors.push(e);
       }
       try {
-        const binding = require("anylist-napi-darwin-arm64");
+        const binding = require("@anylist-napi/anylist-napi-darwin-arm64");
         const bindingPackageVersion =
-          require("anylist-napi-darwin-arm64/package.json").version;
+          require("@anylist-napi/anylist-napi-darwin-arm64/package.json").version;
         if (
-          bindingPackageVersion !== "1.0.3" &&
+          bindingPackageVersion !== "1.1.1" &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
         ) {
           throw new Error(
-            `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+            `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
           );
         }
         return binding;
@@ -310,16 +310,16 @@ function requireNative() {
         loadErrors.push(e);
       }
       try {
-        const binding = require("anylist-napi-freebsd-x64");
+        const binding = require("@anylist-napi/anylist-napi-freebsd-x64");
         const bindingPackageVersion =
-          require("anylist-napi-freebsd-x64/package.json").version;
+          require("@anylist-napi/anylist-napi-freebsd-x64/package.json").version;
         if (
-          bindingPackageVersion !== "1.0.3" &&
+          bindingPackageVersion !== "1.1.1" &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
         ) {
           throw new Error(
-            `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+            `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
           );
         }
         return binding;
@@ -333,16 +333,16 @@ function requireNative() {
         loadErrors.push(e);
       }
       try {
-        const binding = require("anylist-napi-freebsd-arm64");
+        const binding = require("@anylist-napi/anylist-napi-freebsd-arm64");
         const bindingPackageVersion =
-          require("anylist-napi-freebsd-arm64/package.json").version;
+          require("@anylist-napi/anylist-napi-freebsd-arm64/package.json").version;
         if (
-          bindingPackageVersion !== "1.0.3" &&
+          bindingPackageVersion !== "1.1.1" &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
         ) {
           throw new Error(
-            `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+            `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
           );
         }
         return binding;
@@ -363,16 +363,16 @@ function requireNative() {
           loadErrors.push(e);
         }
         try {
-          const binding = require("anylist-napi-linux-x64-musl");
+          const binding = require("@anylist-napi/anylist-napi-linux-x64-musl");
           const bindingPackageVersion =
-            require("anylist-napi-linux-x64-musl/package.json").version;
+            require("@anylist-napi/anylist-napi-linux-x64-musl/package.json").version;
           if (
-            bindingPackageVersion !== "1.0.3" &&
+            bindingPackageVersion !== "1.1.1" &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
           ) {
             throw new Error(
-              `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+              `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
             );
           }
           return binding;
@@ -386,16 +386,16 @@ function requireNative() {
           loadErrors.push(e);
         }
         try {
-          const binding = require("anylist-napi-linux-x64-gnu");
+          const binding = require("@anylist-napi/anylist-napi-linux-x64-gnu");
           const bindingPackageVersion =
-            require("anylist-napi-linux-x64-gnu/package.json").version;
+            require("@anylist-napi/anylist-napi-linux-x64-gnu/package.json").version;
           if (
-            bindingPackageVersion !== "1.0.3" &&
+            bindingPackageVersion !== "1.1.1" &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
           ) {
             throw new Error(
-              `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+              `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
             );
           }
           return binding;
@@ -411,16 +411,16 @@ function requireNative() {
           loadErrors.push(e);
         }
         try {
-          const binding = require("anylist-napi-linux-arm64-musl");
+          const binding = require("@anylist-napi/anylist-napi-linux-arm64-musl");
           const bindingPackageVersion =
-            require("anylist-napi-linux-arm64-musl/package.json").version;
+            require("@anylist-napi/anylist-napi-linux-arm64-musl/package.json").version;
           if (
-            bindingPackageVersion !== "1.0.3" &&
+            bindingPackageVersion !== "1.1.1" &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
           ) {
             throw new Error(
-              `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+              `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
             );
           }
           return binding;
@@ -434,16 +434,16 @@ function requireNative() {
           loadErrors.push(e);
         }
         try {
-          const binding = require("anylist-napi-linux-arm64-gnu");
+          const binding = require("@anylist-napi/anylist-napi-linux-arm64-gnu");
           const bindingPackageVersion =
-            require("anylist-napi-linux-arm64-gnu/package.json").version;
+            require("@anylist-napi/anylist-napi-linux-arm64-gnu/package.json").version;
           if (
-            bindingPackageVersion !== "1.0.3" &&
+            bindingPackageVersion !== "1.1.1" &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
           ) {
             throw new Error(
-              `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+              `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
             );
           }
           return binding;
@@ -459,16 +459,16 @@ function requireNative() {
           loadErrors.push(e);
         }
         try {
-          const binding = require("anylist-napi-linux-arm-musleabihf");
+          const binding = require("@anylist-napi/anylist-napi-linux-arm-musleabihf");
           const bindingPackageVersion =
-            require("anylist-napi-linux-arm-musleabihf/package.json").version;
+            require("@anylist-napi/anylist-napi-linux-arm-musleabihf/package.json").version;
           if (
-            bindingPackageVersion !== "1.0.3" &&
+            bindingPackageVersion !== "1.1.1" &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
           ) {
             throw new Error(
-              `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+              `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
             );
           }
           return binding;
@@ -482,16 +482,16 @@ function requireNative() {
           loadErrors.push(e);
         }
         try {
-          const binding = require("anylist-napi-linux-arm-gnueabihf");
+          const binding = require("@anylist-napi/anylist-napi-linux-arm-gnueabihf");
           const bindingPackageVersion =
-            require("anylist-napi-linux-arm-gnueabihf/package.json").version;
+            require("@anylist-napi/anylist-napi-linux-arm-gnueabihf/package.json").version;
           if (
-            bindingPackageVersion !== "1.0.3" &&
+            bindingPackageVersion !== "1.1.1" &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
           ) {
             throw new Error(
-              `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+              `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
             );
           }
           return binding;
@@ -507,16 +507,16 @@ function requireNative() {
           loadErrors.push(e);
         }
         try {
-          const binding = require("anylist-napi-linux-loong64-musl");
+          const binding = require("@anylist-napi/anylist-napi-linux-loong64-musl");
           const bindingPackageVersion =
-            require("anylist-napi-linux-loong64-musl/package.json").version;
+            require("@anylist-napi/anylist-napi-linux-loong64-musl/package.json").version;
           if (
-            bindingPackageVersion !== "1.0.3" &&
+            bindingPackageVersion !== "1.1.1" &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
           ) {
             throw new Error(
-              `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+              `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
             );
           }
           return binding;
@@ -530,16 +530,16 @@ function requireNative() {
           loadErrors.push(e);
         }
         try {
-          const binding = require("anylist-napi-linux-loong64-gnu");
+          const binding = require("@anylist-napi/anylist-napi-linux-loong64-gnu");
           const bindingPackageVersion =
-            require("anylist-napi-linux-loong64-gnu/package.json").version;
+            require("@anylist-napi/anylist-napi-linux-loong64-gnu/package.json").version;
           if (
-            bindingPackageVersion !== "1.0.3" &&
+            bindingPackageVersion !== "1.1.1" &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
           ) {
             throw new Error(
-              `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+              `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
             );
           }
           return binding;
@@ -555,16 +555,16 @@ function requireNative() {
           loadErrors.push(e);
         }
         try {
-          const binding = require("anylist-napi-linux-riscv64-musl");
+          const binding = require("@anylist-napi/anylist-napi-linux-riscv64-musl");
           const bindingPackageVersion =
-            require("anylist-napi-linux-riscv64-musl/package.json").version;
+            require("@anylist-napi/anylist-napi-linux-riscv64-musl/package.json").version;
           if (
-            bindingPackageVersion !== "1.0.3" &&
+            bindingPackageVersion !== "1.1.1" &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
           ) {
             throw new Error(
-              `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+              `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
             );
           }
           return binding;
@@ -578,16 +578,16 @@ function requireNative() {
           loadErrors.push(e);
         }
         try {
-          const binding = require("anylist-napi-linux-riscv64-gnu");
+          const binding = require("@anylist-napi/anylist-napi-linux-riscv64-gnu");
           const bindingPackageVersion =
-            require("anylist-napi-linux-riscv64-gnu/package.json").version;
+            require("@anylist-napi/anylist-napi-linux-riscv64-gnu/package.json").version;
           if (
-            bindingPackageVersion !== "1.0.3" &&
+            bindingPackageVersion !== "1.1.1" &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
             process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
           ) {
             throw new Error(
-              `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+              `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
             );
           }
           return binding;
@@ -602,16 +602,16 @@ function requireNative() {
         loadErrors.push(e);
       }
       try {
-        const binding = require("anylist-napi-linux-ppc64-gnu");
+        const binding = require("@anylist-napi/anylist-napi-linux-ppc64-gnu");
         const bindingPackageVersion =
-          require("anylist-napi-linux-ppc64-gnu/package.json").version;
+          require("@anylist-napi/anylist-napi-linux-ppc64-gnu/package.json").version;
         if (
-          bindingPackageVersion !== "1.0.3" &&
+          bindingPackageVersion !== "1.1.1" &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
         ) {
           throw new Error(
-            `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+            `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
           );
         }
         return binding;
@@ -625,16 +625,16 @@ function requireNative() {
         loadErrors.push(e);
       }
       try {
-        const binding = require("anylist-napi-linux-s390x-gnu");
+        const binding = require("@anylist-napi/anylist-napi-linux-s390x-gnu");
         const bindingPackageVersion =
-          require("anylist-napi-linux-s390x-gnu/package.json").version;
+          require("@anylist-napi/anylist-napi-linux-s390x-gnu/package.json").version;
         if (
-          bindingPackageVersion !== "1.0.3" &&
+          bindingPackageVersion !== "1.1.1" &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
         ) {
           throw new Error(
-            `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+            `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
           );
         }
         return binding;
@@ -654,16 +654,16 @@ function requireNative() {
         loadErrors.push(e);
       }
       try {
-        const binding = require("anylist-napi-openharmony-arm64");
+        const binding = require("@anylist-napi/anylist-napi-openharmony-arm64");
         const bindingPackageVersion =
-          require("anylist-napi-openharmony-arm64/package.json").version;
+          require("@anylist-napi/anylist-napi-openharmony-arm64/package.json").version;
         if (
-          bindingPackageVersion !== "1.0.3" &&
+          bindingPackageVersion !== "1.1.1" &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
         ) {
           throw new Error(
-            `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+            `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
           );
         }
         return binding;
@@ -677,16 +677,16 @@ function requireNative() {
         loadErrors.push(e);
       }
       try {
-        const binding = require("anylist-napi-openharmony-x64");
+        const binding = require("@anylist-napi/anylist-napi-openharmony-x64");
         const bindingPackageVersion =
-          require("anylist-napi-openharmony-x64/package.json").version;
+          require("@anylist-napi/anylist-napi-openharmony-x64/package.json").version;
         if (
-          bindingPackageVersion !== "1.0.3" &&
+          bindingPackageVersion !== "1.1.1" &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
         ) {
           throw new Error(
-            `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+            `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
           );
         }
         return binding;
@@ -700,16 +700,16 @@ function requireNative() {
         loadErrors.push(e);
       }
       try {
-        const binding = require("anylist-napi-openharmony-arm");
+        const binding = require("@anylist-napi/anylist-napi-openharmony-arm");
         const bindingPackageVersion =
-          require("anylist-napi-openharmony-arm/package.json").version;
+          require("@anylist-napi/anylist-napi-openharmony-arm/package.json").version;
         if (
-          bindingPackageVersion !== "1.0.3" &&
+          bindingPackageVersion !== "1.1.1" &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK &&
           process.env.NAPI_RS_ENFORCE_VERSION_CHECK !== "0"
         ) {
           throw new Error(
-            `Native binding package version mismatch, expected 1.0.3 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
+            `Native binding package version mismatch, expected 1.1.1 but got ${bindingPackageVersion}. You can reinstall dependencies to fix this issue.`,
           );
         }
         return binding;
@@ -745,7 +745,7 @@ if (!nativeBinding || process.env.NAPI_RS_FORCE_WASI) {
   }
   if (!nativeBinding || process.env.NAPI_RS_FORCE_WASI) {
     try {
-      wasiBinding = require("anylist-napi-wasm32-wasi");
+      wasiBinding = require("@anylist-napi/anylist-napi-wasm32-wasi");
       nativeBinding = wasiBinding;
     } catch (err) {
       if (process.env.NAPI_RS_FORCE_WASI) {
