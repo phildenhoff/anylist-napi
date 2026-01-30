@@ -69,6 +69,7 @@ describe("AnyListClient API", () => {
     expect(typeof client.getRecipeById).toBe("function");
     expect(typeof client.createRecipe).toBe("function");
     expect(typeof client.addRecipeToList).toBe("function");
+    expect(typeof client.uploadPhoto).toBe("function");
   });
 });
 

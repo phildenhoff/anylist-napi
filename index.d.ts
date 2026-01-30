@@ -42,6 +42,11 @@ export declare class AnyListClient {
   ): Promise<void>;
   /** Delete a list */
   deleteList(listId: string): Promise<void>;
+  /**
+   * Upload a photo for use with recipes
+   * Returns the photo ID which can be used with createRecipe
+   */
+  uploadPhoto(data: Buffer, filename: string): Promise<string>;
 }
 
 /** Options for creating a new recipe */
@@ -68,6 +73,8 @@ export interface CreateRecipeOptions {
   rating?: number;
   /** Nutritional information */
   nutritionalInfo?: string;
+  /** Photo ID (from upload_photo) */
+  photoId?: string;
 }
 
 /** A recipe ingredient */

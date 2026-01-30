@@ -169,6 +169,8 @@ pub struct CreateRecipeOptions {
     pub rating: Option<i32>,
     /// Nutritional information
     pub nutritional_info: Option<String>,
+    /// Photo ID (from upload_photo)
+    pub photo_id: Option<String>,
 }
 
 impl From<&RsRecipe> for Recipe {
@@ -367,6 +369,9 @@ impl AnyListClient {
         if let Some(nutritional_info) = options.nutritional_info {
             builder = builder.nutritional_info(nutritional_info);
         }
+        if let Some(photo_id) = options.photo_id {
+            builder = builder.photo_id(photo_id);
+        }
 
         let recipe = builder.save(&self.inner).await.map_err(to_napi_error)?;
 
@@ -398,5 +403,18 @@ impl AnyListClient {
             .map_err(to_napi_error)?;
 
         Ok(())
+    }
+
+    /// Upload a photo for use with recipes
+    /// Returns the photo ID which can be used with createRecipe
+    #[napi]
+    pub async fn upload_photo(&self, data: Buffer, filename: String) -> Result<String> {
+        let photo_id = self
+            .inner
+            .upload_photo(data.to_vec(), &filename)
+            .await
+            .map_err(to_napi_error)?;
+
+        Ok(photo_id)
     }
 }
