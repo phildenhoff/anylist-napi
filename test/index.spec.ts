@@ -79,6 +79,40 @@ describe("AnyListClient API", () => {
     expect(typeof client.deleteRecipe).toBe("function");
     expect(typeof client.addRecipeToList).toBe("function");
     expect(typeof client.uploadPhoto).toBe("function");
+    // Category methods
+    expect(typeof client.createCategory).toBe("function");
+    expect(typeof client.deleteCategory).toBe("function");
+    expect(typeof client.renameCategory).toBe("function");
+    // Store methods
+    expect(typeof client.getStoresForList).toBe("function");
+    expect(typeof client.createStore).toBe("function");
+    expect(typeof client.updateStore).toBe("function");
+    expect(typeof client.getStoreFiltersForList).toBe("function");
+    expect(typeof client.deleteStore).toBe("function");
+    // Favourites methods
+    expect(typeof client.getFavourites).toBe("function");
+    expect(typeof client.getFavouritesLists).toBe("function");
+    expect(typeof client.getFavouritesForList).toBe("function");
+    expect(typeof client.addFavourite).toBe("function");
+    expect(typeof client.addFavouriteToList).toBe("function");
+    expect(typeof client.removeFavourite).toBe("function");
+    expect(typeof client.addFavouriteToShoppingList).toBe("function");
+    // Meal planning methods
+    expect(typeof client.getMealPlanEvents).toBe("function");
+    expect(typeof client.createMealPlanEvent).toBe("function");
+    expect(typeof client.updateMealPlanEvent).toBe("function");
+    expect(typeof client.deleteMealPlanEvent).toBe("function");
+    expect(typeof client.addMealPlanIngredientsToList).toBe("function");
+    // iCalendar methods
+    expect(typeof client.enableIcalendar).toBe("function");
+    expect(typeof client.disableIcalendar).toBe("function");
+    expect(typeof client.getIcalendarUrl).toBe("function");
+    // Recipe collection methods
+    expect(typeof client.getRecipeCollections).toBe("function");
+    expect(typeof client.createRecipeCollection).toBe("function");
+    expect(typeof client.deleteRecipeCollection).toBe("function");
+    expect(typeof client.addRecipeToCollection).toBe("function");
+    expect(typeof client.removeRecipeFromCollection).toBe("function");
   });
 });
 
