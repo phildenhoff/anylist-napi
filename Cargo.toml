@@ -2,7 +2,7 @@
 authors = ["Phil Denhoff <phil@denhoff.ca>"]
 edition = "2021"
 name = "anylist_napi"
-version = "0.1.0"
+version = "1.1.0"
 
 [lib]
 crate-type = ["cdylib"]
