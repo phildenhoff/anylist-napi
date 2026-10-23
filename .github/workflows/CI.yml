@@ -313,7 +313,8 @@ jobs:
         with:
           image: ${{ steps.docker.outputs.IMAGE }}
           options: "-v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }} --platform ${{ steps.docker.outputs.PLATFORM }} -e ANYLIST_EMAIL -e ANYLIST_PASSWORD"
-          run: yarn test
+          # Node 25+ images no longer ship yarn
+          run: npm test
         env:
           ANYLIST_EMAIL: ${{ secrets.ANYLIST_EMAIL }}
           ANYLIST_PASSWORD: ${{ secrets.ANYLIST_PASSWORD }}
