@@ -114,3 +114,17 @@ Contributions are welcome! Please ensure:
 ## License
 
 MIT
+
+## Releasing
+
+```bash
+# bump the version in package.json and Cargo.toml first, merge to main, then:
+./release.sh
+```
+
+The script tags `v<version>`, pushes the tag, and waits for CI. CI builds every
+platform and uploads all packages to npm's staging area, which needs no 2FA.
+The script then asks for your npm one-time password and approves each staged
+package, platform packages first, and creates the GitHub release. See
+[npm staged publishing](https://docs.npmjs.com/staged-publishing). You need
+`gh`, `jq`, and an `npm login` on this machine.

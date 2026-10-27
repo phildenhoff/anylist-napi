@@ -435,18 +435,33 @@ jobs:
       - name: List packages
         run: ls -R ./npm
         shell: bash
-      - name: Publish
+      - name: Stage packages on npm
+        # Staged publishing: CI uploads every package without 2FA, and a
+        # maintainer approves them with an OTP by running ./release.sh.
+        # https://docs.npmjs.com/staged-publishing
         run: |
+          npm install -g npm@latest
+          npm --version
           npm config set provenance true
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
           TAG="${{ steps.ref.outputs.tag }}"
           if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "Publishing $TAG as latest"
-            npm publish --access public
+            NPM_TAG=latest
           else
-            echo "Publishing $TAG as next (prerelease)"
-            npm publish --tag next --access public
+            NPM_TAG=next
           fi
+          echo "Staging $TAG with npm tag $NPM_TAG"
+          # Set versions and optionalDependencies, copy binaries into npm/*,
+          # but leave publishing to the loop below.
+          yarn napi prepublish -t npm --skip-optional-publish
+          for dir in npm/*/; do
+            echo "::group::stage $dir"
+            (cd "$dir" && npm stage publish --access public --tag "$NPM_TAG")
+            echo "::endgroup::"
+          done
+          echo "::group::stage root package"
+          npm stage publish --access public --tag "$NPM_TAG" --ignore-scripts
+          echo "::endgroup::"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
