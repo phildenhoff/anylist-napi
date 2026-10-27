@@ -2,13 +2,13 @@
 authors = ["Phil Denhoff <phil@denhoff.ca>"]
 edition = "2021"
 name = "anylist_napi"
-version = "1.1.2"
+version = "1.1.3"
 
 [lib]
 crate-type = ["cdylib"]
 
 [dependencies]
-anylist_rs = { version = "0.5.0", default-features = false, features = [
+anylist_rs = { version = "0.5.1", default-features = false, features = [
   "rustls-tls",
 ] }
 napi = { version = "3.0.0", features = ["tokio_rt"] }
